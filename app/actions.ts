@@ -3,9 +3,10 @@
 import connectDB from "@/lib/db";
 import Comment from "@/models/Comment";
 import Subscriber from "@/models/Subscriber";
-// import { client } from "@/sanity/client"; // Will use later for fetching posts
+import { client } from "@/sanity/client";
+import { groq } from "next-sanity";
 
-// --- Mock Data for Development until Sanity is populated ---
+// --- Types ---
 
 export interface MockPost {
   _id: string;
@@ -18,10 +19,46 @@ export interface MockPost {
   author?: { name: string; image?: string; role?: string };
 }
 
-export async function getPosts(): Promise<MockPost[]> {
-  // Simulate delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
+// --- Data Fetching ---
 
+export async function getPosts(): Promise<MockPost[]> {
+  try {
+    const posts = await client.fetch(
+      groq`*[_type == "post"] | order(publishedAt desc) {
+        _id,
+        title,
+        slug,
+        excerpt,
+        mainImage {
+          asset->{
+            url
+          },
+          alt
+        },
+        publishedAt,
+        "category": categories[0]->title,
+        author->{
+          name,
+          "image": image.asset->url,
+          role
+        }
+      }`
+    );
+
+    // Fallback to mock data if Sanity is empty (for demo purposes)
+    if (!posts || posts.length === 0) {
+      console.log("No posts found in Sanity, returning mock data.");
+      return getMockPosts();
+    }
+
+    return posts;
+  } catch (error) {
+    console.error("Error fetching posts from Sanity:", error);
+    return getMockPosts(); // Fallback on error
+  }
+}
+
+function getMockPosts(): MockPost[] {
   return [
     {
       _id: "1",

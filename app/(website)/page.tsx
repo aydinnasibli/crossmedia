@@ -1,4 +1,4 @@
-import { getPosts } from "./actions";
+import { getPosts } from "@/app/actions";
 import { BreakingNews } from "@/components/home/BreakingNews";
 import { HeroSection } from "@/components/home/HeroSection";
 import { NewsGrid } from "@/components/home/NewsGrid";
