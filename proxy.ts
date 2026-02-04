@@ -14,7 +14,9 @@ export default clerkMiddleware(async (auth, req) => {
 
     // Check if role is admin (adjust property path based on your Clerk setup, typically metadata.role or just role)
     // For this implementation we assume publicMetadata.role or similar custom claim
-    const role = (sessionClaims?.metadata as any)?.role;
+    // We check multiple common locations for robustness
+    const metadata = sessionClaims?.metadata || sessionClaims?.public_metadata || {};
+    const role = (metadata as any)?.role;
 
     if (role !== "admin") {
       return NextResponse.redirect(new URL("/", req.url));
