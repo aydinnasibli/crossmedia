@@ -13,11 +13,11 @@ export function HeroSection({ featuredPost, sidePosts }: HeroSectionProps) {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
       {/* Main Hero Article (8 cols) */}
       <div className="lg:col-span-8 group cursor-pointer">
-        <Link href={`/articles/${featuredPost.slug.current}`}>
+        <Link href={`/articles/${featuredPost.slug}`}>
           <div className="relative h-[480px] w-full rounded-xl overflow-hidden bg-gray-200">
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-              style={{ backgroundImage: `url('${featuredPost.mainImage.asset.url}')` }}
+              style={{ backgroundImage: `url('${featuredPost.mainImage}')` }}
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 p-6 md:p-8 w-full">
@@ -60,12 +60,12 @@ export function HeroSection({ featuredPost, sidePosts }: HeroSectionProps) {
         {sidePosts.map((post, idx) => (
           <Link
             key={post._id}
-            href={`/articles/${post.slug.current}`}
+            href={`/articles/${post.slug}`}
             className="flex-1 relative rounded-xl overflow-hidden group cursor-pointer min-h-[200px]"
           >
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-              style={{ backgroundImage: `url('${post.mainImage.asset.url}')` }}
+              style={{ backgroundImage: `url('${post.mainImage}')` }}
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
             <div className="absolute bottom-0 left-0 p-5">
