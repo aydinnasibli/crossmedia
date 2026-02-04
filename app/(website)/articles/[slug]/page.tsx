@@ -1,4 +1,4 @@
-import { getPosts } from "@/app/actions";
+import { getPostBySlug } from "@/app/actions";
 import { notFound } from "next/navigation";
 import { ArticleHeader } from "@/components/article/ArticleHeader";
 import { ArticleContent } from "@/components/article/ArticleContent";
@@ -11,8 +11,7 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const posts = await getPosts();
-  const post = posts.find((p) => p.slug.current === slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();

@@ -32,13 +32,13 @@ export function NewsGrid({ posts, title = "Gündəm" }: NewsGridProps) {
         {posts.map((post) => (
           <Link
             key={post._id}
-            href={`/articles/${post.slug.current}`}
+            href={`/articles/${post.slug}`}
             className="flex flex-col group"
           >
             <div className="overflow-hidden rounded-lg mb-3 aspect-video bg-gray-100 dark:bg-gray-800">
               <div
                 className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url('${post.mainImage.asset.url}')` }}
+                style={{ backgroundImage: `url('${post.mainImage}')` }}
               ></div>
             </div>
             <div className="flex flex-col flex-1">

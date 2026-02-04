@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { MockPost } from "@/app/actions";
+import { PostType } from "@/app/actions";
+import { format } from "date-fns";
 
-export function ArticleHeader({ post }: { post: MockPost }) {
+export function ArticleHeader({ post }: { post: PostType }) {
   return (
     <div className="flex flex-col gap-6">
       <nav className="flex flex-wrap items-center gap-2 text-sm text-[#616f89] dark:text-gray-400">
@@ -66,7 +67,7 @@ export function ArticleHeader({ post }: { post: MockPost }) {
               >
                 calendar_today
               </span>
-              <span>12 Oktyabr 2023</span>
+              <span>{post.publishedAt ? format(new Date(post.publishedAt), "PPP") : "Tarix yoxdur"}</span>
             </div>
             <div className="flex items-center gap-1">
               <span

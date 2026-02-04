@@ -1,12 +1,14 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IComment extends Document {
-  postId: string; // Refers to Sanity Post ID or Slug
+  postId: string; // Refers to Post Slug or ID
   name: string;
   avatar?: string;
   content: string;
-  createdAt: Date;
   likes: number;
+  isApproved: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const CommentSchema: Schema = new Schema(
@@ -16,6 +18,7 @@ const CommentSchema: Schema = new Schema(
     avatar: { type: String },
     content: { type: String, required: true },
     likes: { type: Number, default: 0 },
+    isApproved: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
