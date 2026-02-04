@@ -1,11 +1,23 @@
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await currentUser();
+
+  // Check if role is admin
+  // This accesses the user's publicMetadata directly from the Clerk API response
+  const role = user?.publicMetadata?.role;
+
+  if (role !== "admin") {
+    redirect("/");
+  }
+
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
       <aside className="w-64 bg-white dark:bg-gray-800 shadow-md flex flex-col">
