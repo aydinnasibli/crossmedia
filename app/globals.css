@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
 @theme {
   --color-primary: #135bec;
@@ -44,5 +43,44 @@ body {
   }
   .animate-marquee {
     animation: marquee 25s linear infinite;
+  }
+}
+
+/* Custom Rich Text Styles (Replacing Tailwind Typography) */
+@layer components {
+  .rich-text {
+    @apply text-base leading-relaxed text-[#111318] dark:text-gray-200 font-body;
+  }
+  .rich-text p {
+    @apply mb-6;
+  }
+  .rich-text h1, .rich-text h2, .rich-text h3, .rich-text h4 {
+    @apply font-bold text-[#111318] dark:text-white mt-8 mb-4 font-display;
+  }
+  .rich-text h1 { @apply text-3xl; }
+  .rich-text h2 { @apply text-2xl; }
+  .rich-text h3 { @apply text-xl; }
+  .rich-text h4 { @apply text-lg; }
+
+  .rich-text a {
+    @apply text-primary font-medium hover:underline;
+  }
+  .rich-text ul {
+    @apply list-disc list-inside mb-6 pl-4;
+  }
+  .rich-text ol {
+    @apply list-decimal list-inside mb-6 pl-4;
+  }
+  .rich-text blockquote {
+    @apply border-l-4 border-primary pl-6 py-2 my-8 italic text-xl font-medium text-gray-800 dark:text-gray-200 bg-background-light dark:bg-gray-800/50 rounded-r-lg;
+  }
+  .rich-text img {
+    @apply rounded-xl max-w-full h-auto my-6 shadow-sm;
+  }
+  .rich-text code {
+    @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono text-red-600 dark:text-red-400;
+  }
+  .rich-text pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6;
   }
 }

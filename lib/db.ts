@@ -33,6 +33,7 @@ async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 5000, // Fail fast if connection cannot be established
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
@@ -44,7 +45,9 @@ async function connectDB() {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
-    throw e;
+    console.error("MongoDB Connection Error:", e);
+    // Do not throw, return null to allow app to continue (albeit with no data)
+    return null;
   }
 
   return cached.conn;

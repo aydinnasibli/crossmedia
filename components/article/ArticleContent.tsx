@@ -16,7 +16,7 @@ export function ArticleContent({ post }: { post: PostType }) {
       </figure>
 
       <div
-        className="prose prose-lg prose-slate dark:prose-invert max-w-none text-[#111318] dark:text-gray-200 font-body leading-loose"
+        className="rich-text"
         dangerouslySetInnerHTML={{ __html: post.content || "<p>Məzmun yoxdur</p>" }}
       />
 

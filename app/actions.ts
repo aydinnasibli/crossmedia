@@ -26,7 +26,9 @@ export type MockPost = PostType;
 
 export async function getPosts(): Promise<PostType[]> {
   try {
-    await connectDB();
+    const db = await connectDB();
+    if (!db) return [];
+
     const posts = await Post.find().sort({ publishedAt: -1 });
     return JSON.parse(JSON.stringify(posts));
   } catch (error) {
@@ -37,7 +39,9 @@ export async function getPosts(): Promise<PostType[]> {
 
 export async function getPostBySlug(slug: string): Promise<PostType | null> {
     try {
-        await connectDB();
+        const db = await connectDB();
+        if (!db) return null;
+
         const post = await Post.findOne({ slug });
         if (!post) return null;
         return JSON.parse(JSON.stringify(post));
@@ -51,7 +55,9 @@ export async function getPostBySlug(slug: string): Promise<PostType | null> {
 
 export async function submitComment(postId: string, formData: FormData) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    if (!db) return { success: false, message: "Database connection failed" };
+
     const content = formData.get("content") as string;
     // Hardcoded user for now, in real app would come from auth
     const name = "Qonaq İstifadəçi";
@@ -76,7 +82,9 @@ export async function submitComment(postId: string, formData: FormData) {
 
 export async function getComments(postId: string) {
     try {
-        await connectDB();
+        const db = await connectDB();
+        if (!db) return [];
+
         // Only get approved comments
         const comments = await Comment.find({ postId, isApproved: true }).sort({ createdAt: -1 });
         return JSON.parse(JSON.stringify(comments));
@@ -88,7 +96,9 @@ export async function getComments(postId: string) {
 
 export async function subscribeNewsletter(formData: FormData) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    if (!db) return { success: false, message: "Database connection failed" };
+
     const email = formData.get("email") as string;
 
     if (!email) return { success: false, message: "Email daxil edin" };
