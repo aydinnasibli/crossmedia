@@ -46,6 +46,14 @@ async function connectDB() {
   } catch (e) {
     cached.promise = null;
     console.error("MongoDB Connection Error:", e);
+
+    // Check for specific DNS SRV error
+    if (e instanceof Error && (e.message.includes("querySrv") || (e as any).code === "ECONNREFUSED")) {
+      console.error("\n!!! POTENTIAL FIX !!!");
+      console.error("If you are seeing a 'querySrv ECONNREFUSED' error, your local network might be blocking DNS SRV lookups.");
+      console.error("Please check TROUBLESHOOTING.md for the solution using the Standard Connection String.\n");
+    }
+
     // Do not throw, return null to allow app to continue (albeit with no data)
     return null;
   }
