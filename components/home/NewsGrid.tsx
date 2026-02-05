@@ -8,7 +8,7 @@ interface NewsGridProps {
 
 export function NewsGrid({ posts, title = "Gündəm" }: NewsGridProps) {
   return (
-    <div className="lg:col-span-8">
+    <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-[#111318] dark:text-white flex items-center gap-2">
           <span className="w-2 h-8 bg-primary rounded-full"></span>

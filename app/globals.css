@@ -4,8 +4,8 @@
   --color-primary: #135bec;
   --color-background-light: #f6f6f8;
   --color-background-dark: #101622;
-  --font-display: "Work Sans", "Noto Sans", sans-serif;
-  --font-body: "Noto Sans", sans-serif;
+  --font-display: var(--font-work-sans), sans-serif;
+  --font-body: var(--font-noto-sans), sans-serif;
   --radius: 0.25rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;

@@ -7,6 +7,8 @@ export interface IPost extends Document {
   content: string;
   mainImage: string;
   category: string;
+  tags: string[];
+  views: number;
   publishedAt: Date;
   author: {
     name: string;
@@ -25,6 +27,8 @@ const PostSchema: Schema = new Schema(
     content: { type: String, required: true },
     mainImage: { type: String, required: true },
     category: { type: String, required: true },
+    tags: { type: [String], default: [] },
+    views: { type: Number, default: 0 },
     publishedAt: { type: Date, default: Date.now },
     author: {
       name: { type: String, required: true },

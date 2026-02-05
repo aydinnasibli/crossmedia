@@ -1,29 +1,25 @@
 import Link from "next/link";
-import { PostType } from "@/app/actions";
+import { MockPost } from "@/app/actions";
 import { format } from "date-fns";
+import { az } from "date-fns/locale";
 
-export function ArticleHeader({ post }: { post: PostType }) {
+export function ArticleHeader({ post }: { post: MockPost }) {
+  if (!post) return null;
+
   return (
     <div className="flex flex-col gap-6">
       <nav className="flex flex-wrap items-center gap-2 text-sm text-[#616f89] dark:text-gray-400">
-        <Link href="/" className="hover:text-primary transition-colors">
+        <Link className="hover:text-primary transition-colors" href="/">
           Ana Səhifə
         </Link>
-        <span
-          className="material-symbols-outlined"
-          style={{ fontSize: "12px" }}
+        <span className="material-symbols-outlined text-xs">chevron_right</span>
+        <Link
+          className="hover:text-primary transition-colors"
+          href={`/category/${post.category}`}
         >
-          chevron_right
-        </span>
-        <Link href="#" className="hover:text-primary transition-colors">
           {post.category || "Xəbər"}
         </Link>
-        <span
-          className="material-symbols-outlined"
-          style={{ fontSize: "12px" }}
-        >
-          chevron_right
-        </span>
+        <span className="material-symbols-outlined text-xs">chevron_right</span>
         <span className="text-[#111318] dark:text-white font-medium">
           Məqalə
         </span>
@@ -45,17 +41,17 @@ export function ArticleHeader({ post }: { post: PostType }) {
               className="size-10 rounded-full bg-gray-200 overflow-hidden bg-cover bg-center"
               style={{
                 backgroundImage: `url('${
-                  post.author?.image ||
+                  post.author.image ||
                   "https://lh3.googleusercontent.com/aida-public/AB6AXuCBIPPlVvRjV4el6HzRbIouevV1t3GK-908hMyw35ZsnSQivytzbW9qSQKJqDm8NHkFpYt0BH-bhq_9zXIgXx2x_BZUx4jdX16W8AW9CvR-INANzYe6n948j-FPPvR-zVPuVwdNrFha6hurcoRHRcGO8_KoYV1EPNVlnI8JmNyJNzk2c-tW12alJl_dEbLEkosMvixKC1swl4aH6eDObtQYhhoFaSgL58Y1KQPX_4CNReKpLceTiKZJiPpj32SalmDS0W2h-03DaAAk"
                 }')`,
               }}
             ></div>
             <div className="flex flex-col">
               <span className="text-[#111318] dark:text-white font-bold text-sm">
-                {post.author?.name || "Redaksiya heyəti"}
+                {post.author.name || "Redaksiya"}
               </span>
               <span className="text-[#616f89] dark:text-gray-400 text-xs">
-                {post.author?.role || "Müəllif"}
+                {post.author.role || "Müəllif"}
               </span>
             </div>
           </div>
@@ -67,7 +63,9 @@ export function ArticleHeader({ post }: { post: PostType }) {
               >
                 calendar_today
               </span>
-              <span>{post.publishedAt ? format(new Date(post.publishedAt), "PPP") : "Tarix yoxdur"}</span>
+              <span>
+                {format(new Date(post.publishedAt), "d MMMM yyyy", { locale: az })}
+              </span>
             </div>
             <div className="flex items-center gap-1">
               <span
