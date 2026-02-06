@@ -1,5 +1,5 @@
-import { getAdminStats, getPosts } from "./actions"; // Using getPosts from local actions file or re-export? Wait, getPosts is in app/actions.ts
-import { getPosts as getAllPosts } from "@/app/actions"; // Import from main actions
+import { getAdminStats } from "./actions";
+import { getPosts as getAllPosts } from "@/app/actions";
 import Link from "next/link";
 import { format } from "date-fns";
 import { az } from "date-fns/locale";
