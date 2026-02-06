@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Work_Sans, Noto_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const workSans = Work_Sans({
@@ -36,6 +37,7 @@ export default function RootLayout({
           className={`${workSans.variable} ${notoSans.variable} antialiased min-h-screen flex flex-col bg-background-light dark:bg-background-dark font-display`}
         >
           {children}
+          <Toaster position="top-center" richColors />
         </body>
       </html>
     </ClerkProvider>

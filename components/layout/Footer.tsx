@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
   return (
@@ -118,19 +119,7 @@ export function Footer() {
             <p className="text-gray-400 text-sm mb-4">
               Ən vacib xəbərləri emailinizə göndərək.
             </p>
-            <form className="flex flex-col gap-2">
-              <input
-                type="email"
-                placeholder="Email ünvanınız"
-                className="bg-gray-800 border-none rounded text-white text-sm placeholder:text-gray-500 focus:ring-1 focus:ring-primary h-10 px-3 outline-none"
-              />
-              <button
-                type="button"
-                className="bg-primary hover:bg-blue-600 text-white text-sm font-bold h-10 rounded transition-colors cursor-pointer"
-              >
-                Abunə ol
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 

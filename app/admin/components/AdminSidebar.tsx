@@ -11,6 +11,7 @@ export default function AdminSidebar() {
     { name: "İdarə Paneli", href: "/admin", icon: "dashboard" },
     { name: "Məqalələr", href: "/admin/posts", icon: "article" },
     { name: "Kateqoriyalar", href: "/admin/categories", icon: "category" },
+    { name: "Şərhlər", href: "/admin/comments", icon: "chat_bubble" },
     { name: "Abunəçilər", href: "/admin/subscribers", icon: "group" },
     { name: "Analitika", href: "/admin/analytics", icon: "analytics" },
   ];

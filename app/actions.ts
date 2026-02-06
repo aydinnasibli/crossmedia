@@ -442,7 +442,13 @@ export async function getComments(postId: string) {
 export async function subscribeNewsletter(formData: FormData) {
   try {
     const db = await connectDB();
-    if (!db) return { success: true, message: "Abunə oldunuz! (Demo)" };
+    if (!db) {
+       // Allow success even if DB fails for demo purposes, or return error?
+       // User asked to fix it, so let's try to be consistent.
+       // If DB is down, we probably can't save.
+       // But for now, let's assume we want to return a message.
+       return { success: false, message: "Bazaya qoşulmaq mümkün olmadı." };
+    }
 
     const email = formData.get("email") as string;
 
@@ -458,6 +464,6 @@ export async function subscribeNewsletter(formData: FormData) {
     return { success: true, message: "Abunə oldunuz!" };
   } catch (error) {
     console.error("Error subscribing:", error);
-    return { success: true, message: "Abunə oldunuz! (Demo)" };
+    return { success: false, message: "Xəta baş verdi. Yenidən cəhd edin." };
   }
 }
