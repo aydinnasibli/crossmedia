@@ -391,15 +391,28 @@ export async function submitComment(postId: string, formData: FormData) {
     if (!db) return { success: false, message: "Database connection failed" };
 
     const content = formData.get("content") as string;
-    // Hardcoded user for now, in real app would come from auth
-    const name = "Qonaq İstifadəçi";
-    const avatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuABbuG7cHMZv1AKPwkzJIOpcZdD6Lo_c0IkqeuXbXFdDSvXVPBgvJ3votw72Mav_WiSJ4eq6fIlTMBwj47M2ZveowX6ndS5kFo_dFcSn9_mQDyBjuKaFFyPaRIBmeYmraS8mgWJoACge-ZUuXbMdj-EfoRhEqVOJwrkT2zguRxAL_-g5OwcpHtZBvMOGLJJADyN1iVpLoaVhqr_E1FBMpNWxU-pV0Fovwc2FTB06umgQTwj1EgPz2HMTlRmPST3MsnrNCoRp8ef3voA";
+    const name = formData.get("name") as string;
+    const surname = formData.get("surname") as string;
+    const email = formData.get("email") as string;
 
-    if (!content) return { success: false, message: "Şərh boş ola bilməz" };
+    if (!content || !name || !surname || !email) {
+      return { success: false, message: "Bütün xanaları doldurun (Ad, Soyad, Email, Rəy)" };
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { success: false, message: "Düzgün email ünvanı daxil edin" };
+    }
+
+    // Generate avatar using initials
+    const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name + " " + surname)}&background=random`;
 
     await Comment.create({
       postId,
       name,
+      surname,
+      email,
       avatar,
       content,
       isApproved: false, // Explicitly pending
