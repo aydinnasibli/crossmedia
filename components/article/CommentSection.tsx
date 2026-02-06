@@ -11,9 +11,8 @@ const initialState = {
 export function CommentSection({ postId, comments = [] }: { postId: string, comments?: any[] }) {
   const [state, formAction, isPending] = useActionState(
     async (_prevState: typeof initialState, formData: FormData) => {
-        const data = new FormData();
-        data.append("content", formData.get("content") as string);
-        const result = await submitComment(postId, data);
+        // Forward all fields to the server action
+        const result = await submitComment(postId, formData);
         return {
             success: result.success,
             message: result.message || ""
@@ -32,8 +31,42 @@ export function CommentSection({ postId, comments = [] }: { postId: string, comm
       </h3>
 
       <form action={formAction} className="mb-10 bg-white dark:bg-[#1A202C] border border-[#f0f2f4] dark:border-gray-800 p-6 rounded-xl shadow-sm">
+        <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-wide">Şərh Yazın</h4>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Ad *</label>
+                <input
+                    name="name"
+                    required
+                    placeholder="Adınız"
+                    className="w-full bg-[#f8f9fa] dark:bg-gray-800 border-none rounded-lg px-4 py-3 text-sm text-[#111318] dark:text-white placeholder:text-[#616f89] focus:ring-2 focus:ring-primary/50"
+                />
+            </div>
+            <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Soyad *</label>
+                <input
+                    name="surname"
+                    required
+                    placeholder="Soyadınız"
+                    className="w-full bg-[#f8f9fa] dark:bg-gray-800 border-none rounded-lg px-4 py-3 text-sm text-[#111318] dark:text-white placeholder:text-[#616f89] focus:ring-2 focus:ring-primary/50"
+                />
+            </div>
+        </div>
+
+        <div className="mb-4">
+            <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Email *</label>
+            <input
+                name="email"
+                type="email"
+                required
+                placeholder="nümunə@mail.com"
+                className="w-full bg-[#f8f9fa] dark:bg-gray-800 border-none rounded-lg px-4 py-3 text-sm text-[#111318] dark:text-white placeholder:text-[#616f89] focus:ring-2 focus:ring-primary/50"
+            />
+        </div>
+
         <div className="flex gap-4">
-          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0 hidden md:flex">
             <span className="material-symbols-outlined">person</span>
           </div>
           <div className="flex-1">
@@ -43,12 +76,10 @@ export function CommentSection({ postId, comments = [] }: { postId: string, comm
               className="w-full bg-[#f8f9fa] dark:bg-gray-800 border-none rounded-lg p-4 text-[#111318] dark:text-white placeholder:text-[#616f89] focus:ring-2 focus:ring-primary/50 resize-y min-h-[100px]"
               placeholder="Fikirlərinizi yazın..."
             ></textarea>
-            <div className="flex justify-end mt-3 items-center gap-4">
-               {state.message && (
-                  <span className={`text-sm ${state.success ? 'text-green-600' : 'text-red-600'}`}>
-                      {state.message}
-                  </span>
-               )}
+            <div className="flex justify-between mt-3 items-center gap-4">
+               <span className={`text-sm font-medium ${state.success ? 'text-green-600' : 'text-red-600'}`}>
+                   {state.message}
+               </span>
               <button
                 type="submit"
                 disabled={isPending}
@@ -66,17 +97,17 @@ export function CommentSection({ postId, comments = [] }: { postId: string, comm
           <div key={i} className="flex gap-4">
             <div
               className="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0 bg-cover bg-center"
-              style={{ backgroundImage: `url('${comment.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuABbuG7cHMZv1AKPwkzJIOpcZdD6Lo_c0IkqeuXbXFdDSvXVPBgvJ3votw72Mav_WiSJ4eq6fIlTMBwj47M2ZveowX6ndS5kFo_dFcSn9_mQDyBjuKaFFyPaRIBmeYmraS8mgWJoACge-ZUuXbMdj-EfoRhEqVOJwrkT2zguRxAL_-g5OwcpHtZBvMOGLJJADyN1iVpLoaVhqr_E1FBMpNWxU-pV0Fovwc2FTB06umgQTwj1EgPz2HMTlRmPST3MsnrNCoRp8ef3voA"}')` }}
+              style={{ backgroundImage: `url('${comment.avatar || "https://ui-avatars.com/api/?name=" + comment.name + "&background=random"}')` }}
             ></div>
             <div className="flex-1">
               <div className="bg-[#f8f9fa] dark:bg-gray-800/50 p-4 rounded-xl rounded-tl-none">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-bold text-[#111318] dark:text-white text-sm">
-                    {comment.name}
+                    {comment.name} {comment.surname}
                   </span>
                   <span className="text-xs text-[#616f89]">
                       {/* Format date properly in real app */}
-                      Bu gün
+                      {comment.createdAt ? new Date(comment.createdAt).toLocaleDateString("az-AZ") : "Bu gün"}
                   </span>
                 </div>
                 <p className="text-sm text-[#4a5568] dark:text-gray-300">
@@ -91,7 +122,7 @@ export function CommentSection({ postId, comments = [] }: { postId: string, comm
                   >
                     thumb_up
                   </span>{" "}
-                  Bəyən (0)
+                  Bəyən ({comment.likes || 0})
                 </button>
                 <button className="text-xs font-bold text-[#616f89] hover:text-primary">
                   Cavab yaz
