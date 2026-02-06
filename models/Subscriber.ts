@@ -12,7 +12,8 @@ const SubscriberSchema: Schema = new Schema(
   { timestamps: true }
 );
 
+// Explicitly set collection name to 'abuneciler'
 const Subscriber: Model<ISubscriber> =
-  mongoose.models.Subscriber || mongoose.model<ISubscriber>("Subscriber", SubscriberSchema);
+  mongoose.models.Subscriber || mongoose.model<ISubscriber>("Subscriber", SubscriberSchema, "abuneciler");
 
 export default Subscriber;
